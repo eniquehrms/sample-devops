@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="74a6a6b4-3ccd-4f36-82f6-612a289361fc" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="sample-azureFlow" doc:id="afbd8536-b569-49bd-ba91-ca29e67078d6" >
+		<http:listener doc:name="Listener" doc:id="3295d19f-9729-4fba-8adb-8c9c923cc446" config-ref="HTTP_Listener_config" path="/sam"/>
+		<ee:transform doc:name="Transform Message" doc:id="baacb2ec-ea2f-440d-b84d-b4dc270d254d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"hi " ++ attributes.queryParams.name as String]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
